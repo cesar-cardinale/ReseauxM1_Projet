@@ -22,15 +22,6 @@ eth1:
     - enabled: True
     - type: eth
     - proto: none
-    - ipaddr: 172.16.2.131
-    - netmask: 28
-
-## Configuration eth2
-eth2:
-  network.managed:
-    - enabled: True
-    - type: eth
-    - proto: none
     - enable_ipv4: false
     - ipv6proto: static
     - enable_ipv6: true
@@ -38,20 +29,32 @@ eth2:
     - ipv6ipaddr: fc00:1234:3::1
     - ipv6netmask: 64
 
-## Configuration de la route vers VM2 via LAN1
-route_ipv4:
-  network.routes:
-    - name: eth1
-    - routes:
-      - name: LAN1
-        ipaddr: 172.16.2.160/28
-        gateway: 172.16.2.160
+## Configuration eth2
+eth2:
+  network.managed:
+    - enabled: True
+    - type: eth
+    - proto: none
+    - ipaddr: 172.16.2.131
+    - netmask: 28
 
 ## Configuration de la route vers VM1-6 via LAN3-6
 route_ipv6:
   network.routes:
-    - name: eth2
+    - name: eth1
     - routes:
       - name: LAN3-6
         ipaddr: fc00:1234:3::/64
         gateway: fc00:1234:3::16
+
+## Configuration de la route vers VM2 via LAN1
+route_ipv4:
+  network.routes:
+    - name: eth2
+    - routes:
+      - name: LAN1
+        ipaddr: 172.16.2.128/28
+        gateway: 172.16.2.132
+      - name: LAN2
+        ipaddr: 172.16.2.160/28
+        gateway: 172.16.2.132

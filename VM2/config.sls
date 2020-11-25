@@ -44,7 +44,7 @@ route_ipv4:
         gateway: 172.16.2.131
 
 ## Configuration de la route vers VM3 via LAN2
-route_ipv6:
+route_LAN2:
   network.routes:
     - name: eth2
     - routes:

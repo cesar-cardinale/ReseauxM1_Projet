@@ -5,16 +5,34 @@ python:
   pkg:
     - installed
 
+## Installation du serveur ECHO sur la VM
+inetutils-inetd:
+  pkg:
+    - installed
+
+## Ajout du service ECHO dans la BD de inetd
+update-inetd --add "echo stream tcp6 nowait nobody internal":
+  cmd:
+    - run
+
+## Lancement et activation de inetd
+service inetutils-inetd start:
+  cmd:
+    - run
+service inetutils-inetd restart:
+  cmd:
+    - run
+
 ## Désactivation de network-manager
 NetworkManager:
   service:
     - dead
     - enable: False
     
-## Suppression de la passerelle par défaut
-ip route del default:
-  cmd:
-    - run
+## Suppression de la passerelle par défaut --> non car serveur ECHO
+#ip route del default:
+#  cmd:
+#    - run
 
 ## Configuration eth1
 eth1:
