@@ -34,6 +34,18 @@ NetworkManager:
 #  cmd:
 #    - run
 
+## Ajout forwarding ipv6
+net.ipv6.conf.all.forwarding:
+  sysctl:
+    - present
+    - value: 1
+
+## Ajout forwarding ipv4
+net.ipv4.ip_forward:
+  sysctl:
+    - present
+    - value: 1
+
 ## Configuration eth1
 eth1:
   network.managed:
