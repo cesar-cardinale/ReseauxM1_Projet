@@ -49,8 +49,24 @@ eth1-routes:
         ipaddr: fc00:1234:1::/64
         gateway: fc00:1234:2::26
 
-## Ajout forwarding ipv6
-net.ipv6.conf.all.forwarding:
-  sysctl:
-    - present
-    - value: 1
+## Connexion internet pour pouvoir installer les packets
+dhclient eth0:
+  cmd.run
+
+## Installation du serveur ECHO sur la VM
+inetutils-inetd:
+  pkg:
+    - installed
+
+## Ajout du service ECHO dans la BD de inetd
+update-inetd --add "echo stream tcp6 nowait nobody internal":
+  cmd:
+    - run
+
+## Lancement et activation de inetd
+service inetutils-inetd start:
+  cmd:
+    - run
+service inetutils-inetd restart:
+  cmd:
+    - run

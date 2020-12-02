@@ -55,3 +55,26 @@ eth2-routes:
       - name: LAN3-6
         ipaddr: fc00:1234:3::/64
         gateway: fc00:1234:4::36
+
+
+## Connexion internet pour pouvoir installer les packets
+dhclient eth0:
+  cmd.run
+
+## Installation du serveur ECHO sur la VM
+inetutils-inetd:
+  pkg:
+    - installed
+
+## Ajout du service ECHO dans la BD de inetd
+update-inetd --add "echo stream tcp nowait nobody internal":
+  cmd:
+    - run
+
+## Lancement et activation de inetd
+service inetutils-inetd start:
+  cmd:
+    - run
+service inetutils-inetd restart:
+  cmd:
+    - run
