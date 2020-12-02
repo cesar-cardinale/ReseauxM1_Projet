@@ -1,28 +1,5 @@
 # Configuration VM3-6
 
-## Installation de Python3 sur la VM
-python:
-  pkg:
-    - installed
-
-## Installation du serveur ECHO sur la VM
-inetutils-inetd:
-  pkg:
-    - installed
-
-## Ajout du service ECHO dans la BD de inetd
-update-inetd --add "echo stream tcp6 nowait nobody internal":
-  cmd:
-    - run
-
-## Lancement et activation de inetd
-service inetutils-inetd start:
-  cmd:
-    - run
-service inetutils-inetd restart:
-  cmd:
-    - run
-
 ## Désactivation de network-manager
 NetworkManager:
   service:
@@ -30,9 +7,9 @@ NetworkManager:
     - enable: False
     
 ## Suppression de la passerelle par défaut --> non car serveur ECHO
-#ip route del default:
-#  cmd:
-#    - run
+ip route del default:
+  cmd:
+    - run
 
 ## Configuration eth1
 eth1:
@@ -60,20 +37,20 @@ eth2:
     - ipv6ipaddr: fc00:1234:4::36
     - ipv6netmask: 64
 
-## Configuration de la route vers VM2-6 via LAN2-6
-route_ipv6:
+## Configuration des routes
+eth1-routes:
   network.routes:
     - name: eth1
     - routes:
-      - name: LAN2-6
-        ipaddr: fc00:1234:2::/64
+      - name: LAN3-6
+        ipaddr: fc00:1234:3::/64
+        gateway: fc00:1234:2::26
+      - name: LAN1-6
+        ipaddr: fc00:1234:1::/64
         gateway: fc00:1234:2::26
 
-## Configuration de la route vers VM3 via LAN4-6
-route_ipv6_2:
-  network.routes:
-    - name: eth2
-    - routes:
-      - name: LAN4-6
-        ipaddr: fc00:1234:4::/64
-        gateway: fc00:1234:4::3
+## Ajout forwarding ipv6
+net.ipv6.conf.all.forwarding:
+  sysctl:
+    - present
+    - value: 1

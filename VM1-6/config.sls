@@ -1,10 +1,5 @@
 # Configuration VM1-6
 
-## Installation de Python3 sur la VM
-python:
-  pkg:
-    - installed
-
 ## Désactivation de network-manager
 NetworkManager:
   service:
@@ -15,12 +10,6 @@ NetworkManager:
 ip route del default:
   cmd:
     - run
-
-## Ajout forwarding ipv6
-net.ipv6.conf.all.forwarding:
-  sysctl:
-    - present
-    - value: 1
 
 ## Configuration eth1
 eth1:
@@ -50,7 +39,7 @@ eth2:
 
 
 ## Configuration des routes
-routes:
+eth2-routes:
   network.routes:
     - name: eth2
     - routes:
@@ -60,3 +49,9 @@ routes:
       - name: LAN4-6
         ipaddr: fc00:1234:4::/64
         gateway: fc00:1234:1::26
+
+## Ajout forwarding ipv6
+net.ipv6.conf.all.forwarding:
+  sysctl:
+    - present
+    - value: 1
