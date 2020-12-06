@@ -35,10 +35,10 @@ def tun_alloc(name):
 def tun_read(src):
     output = os.fdopen(1, 'w')
     while True:
-        bytes = os.read(src.fileno(), 120)
-        output.write(bytes)
+        buffer = os.read(src.fileno(), 120)
+        output.write(buffer)
         output.flush()
-        if len(bytes) == 0:
+        if len(buffer) == 0:
             break
     os.close(src.fileno())
 
@@ -59,12 +59,15 @@ def ext_out():
         client, address = server.accept()
         print("{} connecté".format(address))
 
-        response = client.recv(1024)
-        if response != "":
-            print(response)
-        else:
-            print("{} déconnecté".format(address))
-            client.close()
+        while True:
+            response = client.recv(1024)
+            if response != "":
+                print(response)
+            else:
+                break
+
+        print("{} déconnecté".format(address))
+        client.close()
 
     server.close()
 
@@ -79,7 +82,7 @@ def ext_in(ip_serv, port, tunfd):
                 break
         server.close()
     except socket.error:
-        print("La connexion au serveur échouée. // {}".format(socket.error))
+        print("La connexion au serveur a échoué.")
         sys.exit()
 
     # server.send("Hey my name is Olivier!")
