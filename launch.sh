@@ -11,10 +11,10 @@ echo "Démarrage VM3\n"
 vagrant up
 
 # shellcheck disable=SC2164
-cd ../VM2
+#cd ../VM2
 # shellcheck disable=SC2028
-echo "Démarrage VM2\n"
-vagrant up
+#echo "Démarrage VM2\n"
+#vagrant up
 
 # shellcheck disable=SC2164
 cd ../VM1-6
